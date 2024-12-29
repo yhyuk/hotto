@@ -1,0 +1,11 @@
+package com.hotto.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class InvalidLottoRequestException extends RuntimeException {
+    public InvalidLottoRequestException(String message) {
+        super(message);
+    }
+}
