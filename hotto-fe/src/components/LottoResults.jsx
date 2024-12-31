@@ -42,8 +42,12 @@ const LottoResults = () => {
     console.log(lottoData);
     return (
         <Container>
-            <Title>{drawNumber}회 당첨 번호</Title>
-            <Subtitle>추첨일: {drawDate} 오후 8시 30분</Subtitle>
+            <Header>
+                <Title>
+                    {drawNumber}회 당첨 번호
+                    <Subtitle>추첨일: {drawDate}</Subtitle>
+                </Title>
+            </Header>
             <Numbers>
                 <Ball>{number1}</Ball>
                 <Ball>{number2}</Ball>
@@ -61,61 +65,65 @@ const LottoResults = () => {
 export default LottoResults;
 
 const Container = styled.div`
-    margin: 20px auto;
+    width: 100%; 
+    margin: 0 auto;
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 400px;
+`;
+
+const Header = styled.div`
+    margin-bottom: 20px;
 `;
 
 const Title = styled.h2`
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    margin: 0 0 5px 0;
 `;
 
 const Subtitle = styled.p`
-    font-size: 16px;
-    margin-bottom: 20px;
+    font-size: 14px;
     color: #666;
+    margin: 0;
 `;
 
 const Numbers = styled.div`
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%; /* 부모 컨테이너와 동일한 너비 */
+    box-sizing: border-box;
 `;
 
-const Ball = styled.span`
+const Ball = styled.div`
     width: 40px;
     height: 40px;
-    background-color: #ffd700;
-    border-radius: 50%;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    margin: 0 5px;
     font-size: 18px;
     font-weight: bold;
-    color: #333;
-`;
-
-const PlusSign = styled.div`
-    font-size: 24px; 
-    font-weight: bold; 
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-    margin: 0 10px; 
-    color: #333; 
 `;
 
 const BonusBall = styled(Ball)`
-    background-color: #ff6f61;
-    color: #fff;
+    background-color: #ffcc00;
 `;
+
+const PlusSign = styled.div`
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 10px;
+    color: #333;
+`;
+
 
 const Message = styled.div`
     text-align: center;
