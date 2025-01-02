@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import styled from "styled-components";
-import LottoCard from './LottoCard';
+import LottoCard from './LottoDraw';
 import LottoResults from './LottoResults';
 
 const LottoGenerator = () => {
