@@ -27,6 +27,12 @@ const LottoResults = () => {
     if (loading) return <Message>Loading...</Message>;
     if (error) return <Message>{error}</Message>;
 
+    // 금액 포맷팅 함수
+    const formatAmount = (amount) => {
+        if (!amount) return '-';
+        return Number(amount).toLocaleString(); // 3자리마다 콤마 추가
+    };
+
     const {
         drwNo: drawNumber,
         drwNoDate: drawDate,
@@ -36,16 +42,31 @@ const LottoResults = () => {
         drwtNo4: number4,
         drwtNo5: number5,
         drwtNo6: number6,
-        bnusNo: bonusNumber
-      } = lottoData;
+        bnusNo: bonusNumber,
+        firstAccumamnt: firstAccumamnt,
+        firstWinamnt: firstWinamnt,
+        firstPrzwnerCo: firstPrzwnerCo
+    } = lottoData;
       
     return (
         <Container>
             <Header>
                 <Title>
                     {drawNumber}회 당첨 번호
-                    <Subtitle>추첨일: {drawDate}</Subtitle>
+                    <Subtitle>(추첨일: {drawDate})</Subtitle>
                 </Title>
+                <PrizeContainer>
+                    <PrizeRow>
+                        <PrizeLabel>총 당첨금</PrizeLabel>
+                        <PrizeValue>{formatAmount(firstAccumamnt)}원</PrizeValue>
+                    </PrizeRow>
+                    <PrizeRow>
+                        <PrizeLabel>1등 당첨금({firstPrzwnerCo}명)</PrizeLabel>
+                        <PrizeValue>
+                            {formatAmount(firstWinamnt)}원
+                        </PrizeValue>
+                    </PrizeRow>
+                </PrizeContainer>
             </Header>
             <Numbers>
                 <Ball>{number1}</Ball>
@@ -83,7 +104,29 @@ const Title = styled.h2`
 const Subtitle = styled.p`
     font-size: 14px;
     color: #666;
-    margin: 0;
+    display: inline-block;
+    margin-left: 12px;
+`;
+
+const PrizeContainer = styled.div`
+    text-align: left; /* 내부 텍스트 왼쪽 정렬 */
+`;
+
+const PrizeRow = styled.div`
+    margin: 5px 0;
+`;
+
+const PrizeLabel = styled.div`
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+`;
+
+const PrizeValue = styled.div`
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 8px;
 `;
 
 const Numbers = styled.div`

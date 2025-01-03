@@ -6,34 +6,17 @@ const MyLotto = () => {
 
     // 로컬스토리지에서 로또 데이터를 불러오는 함수
     useEffect(() => {
-        const storedLottoData = [];
-        // 로컬스토리지의 모든 키를 순회합니다.
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i); // 키를 가져옴
-            const data = JSON.parse(localStorage.getItem(key)); // 해당 키에 대한 데이터
-            if (data) {
-                storedLottoData.push(data); // 데이터가 있으면 배열에 추가
-            }
+        const storedData = localStorage.getItem("myLottoNumbers"); // myLottoNumbers 키에서 가져옴
+        if (storedData) {
+            setLottoData(JSON.parse(storedData)); // 파싱 후 상태에 저장
         }
-        setLottoData(storedLottoData); // 상태에 데이터 저장
     }, []);
 
+    // 카드 삭제 함수
     const removeCard = (cardId) => {
-        // 로컬스토리지에서 해당 아이템 삭제
-        localStorage.removeItem(cardId);
-
-        // 삭제 후 로컬스토리지에서 최신 데이터 불러오기
-        const updatedLottoData = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            const data = JSON.parse(localStorage.getItem(key));
-            if (data) {
-                updatedLottoData.push(data);
-            }
-        }
-
-        // 상태 업데이트
-        setLottoData(updatedLottoData);
+        const updatedData = lottoData.filter((lotto) => lotto.id !== cardId); // 해당 ID 제거
+        setLottoData(updatedData); // 상태 업데이트
+        localStorage.setItem("myLottoNumbers", JSON.stringify(updatedData)); // 로컬스토리지 갱신
     };
 
     return (
@@ -52,18 +35,20 @@ const MyLotto = () => {
                     </thead>
                     <tbody>
                         {lottoData.map((lotto) => (
-                            <Tr key={lotto.id}>
-                                <Card>
-                                    {lotto.numbers.map((number, idx) => (
-                                        <Ball key={idx}>{number}</Ball>
-                                    ))}
-                                </Card>
-                                <Td>{lotto.registered}</Td> {/* 저장일 */}
-                                <Td>
-                                    <DeleteButton onClick={() => removeCard(lotto.id)}>삭제</DeleteButton>
-                                </Td>
-                            </Tr>
-                        ))}
+                                <Tr key={lotto.id}>
+                                    <Td>
+                                        <Card>
+                                            {lotto.numbers.map((number, idx) => (
+                                                <Ball key={idx}>{number}</Ball>
+                                            ))}
+                                        </Card>
+                                    </Td>
+                                    <Td>{lotto.registered}</Td>
+                                    <Td>
+                                        <DeleteButton onClick={() => removeCard(lotto.id)}>삭제</DeleteButton>
+                                    </Td>
+                                </Tr>
+                            ))}
                     </tbody>
                 </Table>
             )}

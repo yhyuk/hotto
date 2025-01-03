@@ -56,26 +56,93 @@ const LottoCard = () => {
         setCards((prevCards) => prevCards.filter((card) => card.id !== id));
     };    
 
-    // 로컬 스토리지에 카드 번호 저장
+    // 로컬스토리지에 저장된 배열 가져오기
+    const getStoredLottoNumbers = () => {
+        const storedData = localStorage.getItem("myLottoNumbers");
+        return storedData ? JSON.parse(storedData) : []; // 데이터가 없으면 빈 배열 반환
+    };
+
+    // 로컬 스토리지 번호 저장
     const saveLottoNumbersToLocalStorage = (cardId, numbers) => {
-        const registered = formatDate(new Date()); // 현재 시간을 yyyy-mm-dd HH:MM:ss 형식으로 저장
+        const registered = formatDate(new Date()); // 현재 시간 yyyy-mm-dd HH:MM:ss
+
+        const existingData = getStoredLottoNumbers();
+
+        // 중복 여부 확인
+        const isDuplicate = existingData.some(
+            (card) =>
+                JSON.stringify(card.numbers) === JSON.stringify(numbers) // 배열 비교
+        );
+    
+        if (isDuplicate) {
+            alert("이미 저장된 번호입니다!");
+            return false; // 저장 중단
+        }
+    
         const cardData = {
             id: cardId,
             numbers: numbers,
             registered: registered,
         };
-        localStorage.setItem(`lottoCard-${cardId}`, JSON.stringify(cardData)); // cardId를 키로 사용하여 로컬스토리지에 저장
+
+        const updatedData = [...existingData, cardData];
+        localStorage.setItem("myLottoNumbers", JSON.stringify(updatedData)); // 'myLottoNumbers' 키에 배열 저장
+        return true;
     };
 
-    // 저장 버튼 클릭 시 호출되는 함수
+    // 단일 저장 버튼 handler
     const handleSave = (cardId, numbers) => {
-        if (numbers.includes('?')) {
-            alert('번호를 추첨해야만 저장할 수 있습니다.');
+        if (numbers.includes("?")) {
+            alert("번호를 추첨해야만 저장할 수 있습니다.");
             return;
         }
-    
-        saveLottoNumbersToLocalStorage(cardId, numbers); // 해당 카드 번호만 저장
-        alert(`카드 ${cardId} 번호가 저장되었습니다!`);
+
+        const success = saveLottoNumbersToLocalStorage(cardId, numbers); 
+        if (success) {
+            alert(`카드 ${numbers} 번호가 저장되었습니다!`);
+        }
+    };
+
+    // 전체 저장 버튼 handler
+    const handleSaveAll = () => {
+        let savedCount = 0; // 저장된 카드 개수를 추적
+        const existingData = getStoredLottoNumbers();
+
+        const updatedData = [...existingData]; // 기존 데이터 복사
+
+        cards.forEach((card) => {
+            if (card.numbers.includes("?")) {
+                alert("번호를 추첨해야만 저장할 수 있습니다.");
+                return;
+            }
+
+            // 중복 여부 확인
+            const isDuplicate = existingData.some(
+                (existingCard) =>
+                    JSON.stringify(existingCard.numbers) === JSON.stringify(card.numbers)
+            );
+
+            if (isDuplicate) {
+                return;
+            }
+
+            // 카드 저장 데이터 생성
+            const cardData = {
+                id: card.id,
+                numbers: card.numbers,
+                registered: formatDate(new Date()), // 현재 시간 저장
+            };
+
+            updatedData.push(cardData); // 업데이트된 데이터에 추가
+            savedCount++;
+        });
+
+        // 로컬스토리지 갱신
+        localStorage.setItem("myLottoNumbers", JSON.stringify(updatedData));
+
+        if (savedCount > 0) {
+            alert(`${savedCount}개의 카드가 저장되었습니다.`);
+        }
     };
 
     return (
@@ -85,6 +152,7 @@ const LottoCard = () => {
                 <div>
                     <DefaultButton onClick={addCard}>추가</DefaultButton>
                     <DrawButton onClick={fetchLottoNumbers}>추첨</DrawButton>
+                    <SaveButton onClick={() => handleSaveAll()}>저장</SaveButton> {/* 상단 저장 버튼 추가 */}
                 </div>
             </Header>
             {cards.map((card, index) => (
