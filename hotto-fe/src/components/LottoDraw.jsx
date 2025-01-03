@@ -143,6 +143,14 @@ const LottoCard = () => {
             alert(`${savedCount}개의 카드가 저장되었습니다.`);
         }
     };
+
+    const getColorForNumber = (number) => {
+        if (number <= 10) return "#fbc400"; // 1~10: Red
+        if (number <= 20) return "#69c8f2"; // 11~20: Blue
+        if (number <= 30) return "#ff7272"; // 21~30: Coral
+        if (number <= 40) return "#aaa"; // 31~40: Gray
+        return "#b0d840"; // 41~45: Green
+    };
     
     return (
         <Container>
@@ -160,7 +168,7 @@ const LottoCard = () => {
                 <CardContainer key={card.id}>
                     <Card>
                         {card.numbers.map((number, idx) => (
-                            <Ball key={idx}>{number}</Ball>
+                            <Ball key={idx} color={getColorForNumber(number)}>{number}</Ball>
                         ))}
                     </Card>
                     {index > 0 && ( // 첫 번째 카드는 삭제 버튼 표시하지 않음
@@ -296,7 +304,7 @@ const Ball = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background-color: #f0f0fe;
+    background-color: ${({ color }) => color };
     margin: 0 5px;
     font-size: 18px;
     font-weight: bold;

@@ -21,10 +21,11 @@ const LottoManual = () => {
     };
 
     const getColorForNumber = (number) => {
-        if (number <= 10) return "#ffcccb"; // 1~10: Red
-        if (number <= 20) return "#add8e6"; // 11~20: Blue
-        if (number <= 30) return "#90ee90"; // 21~30: Green
-        return "#ffd700"; // 31~45: Yellow
+        if (number <= 10) return "#fbc400"; // 1~10: Red
+        if (number <= 20) return "#69c8f2"; // 11~20: Blue
+        if (number <= 30) return "#ff7272"; // 21~30: Coral
+        if (number <= 40) return "#aaa"; // 31~40: Gray
+        return "#b0d840"; // 41~45: Green
     };
 
     return (
@@ -94,7 +95,7 @@ const NumberBall = styled.div`
     align-items: center;
     border-radius: 50%;
     background-color: ${({ selected, color }) =>
-        selected ? "darkgray" : color}; /* 선택된 경우 색상 변경 */
+        selected ? "black" : color}; /* 선택된 경우 색상 변경 */
     color: ${({ selected }) => (selected ? "white" : "black")};
     font-size: 16px;
     font-weight: bold;
@@ -126,7 +127,7 @@ const Ball = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background-color: #FF7F00;
+    background-color: #50C878;
     margin: 0 5px;
     font-size: 18px;
     font-weight: bold;

@@ -47,6 +47,14 @@ const LottoResults = () => {
         firstWinamnt: firstWinamnt,
         firstPrzwnerCo: firstPrzwnerCo
     } = lottoData;
+
+    const getColorForNumber = (number) => {
+        if (number <= 10) return "#fbc400"; // 1~10: Red
+        if (number <= 20) return "#69c8f2"; // 11~20: Blue
+        if (number <= 30) return "#ff7272"; // 21~30: Coral
+        if (number <= 40) return "#aaa"; // 31~40: Gray
+        return "#b0d840"; // 41~45: Green
+    };
       
     return (
         <Container>
@@ -69,14 +77,14 @@ const LottoResults = () => {
                 </PrizeContainer>
             </Header>
             <Card>
-                <Ball>{number1}</Ball>
-                <Ball>{number2}</Ball>
-                <Ball>{number3}</Ball>
-                <Ball>{number4}</Ball>
-                <Ball>{number5}</Ball>
-                <Ball>{number6}</Ball>
+                <Ball color={getColorForNumber(number1)}>{number1}</Ball>
+                <Ball color={getColorForNumber(number2)}>{number2}</Ball>
+                <Ball color={getColorForNumber(number3)}>{number3}</Ball>
+                <Ball color={getColorForNumber(number4)}>{number4}</Ball>
+                <Ball color={getColorForNumber(number5)}>{number5}</Ball>
+                <Ball color={getColorForNumber(number6)}>{number6}</Ball>
                 <PlusSign>+</PlusSign>
-                <BonusBall>{bonusNumber}</BonusBall>
+                <BonusBall color={getColorForNumber(bonusNumber)}>{bonusNumber}</BonusBall>
             </Card>
         </Container>
     );
@@ -150,13 +158,14 @@ const Ball = styled.div`
     align-items: center;
     border-radius: 50%;
     background-color: #f0f0f0;
+    background-color: ${({ color }) => color };
     margin: 0 5px;
     font-size: 18px;
     font-weight: bold;
 `;
 
 const BonusBall = styled(Ball)`
-    background-color: #ffcc00;
+    background-color: ${({ color }) => color };
 `;
 
 const PlusSign = styled.div`
