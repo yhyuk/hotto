@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import styled from "styled-components";
 import LottoCard from './LottoDraw';
 import LottoResults from './LottoResults';
+import LottoManual from './LottoManual';
 
 const LottoGenerator = () => {
     return (
         <Container>
             <LottoResults />
-            <LottoCard/>
+            <LottoCard />
+            <LottoManual />
         </Container>
     )
 }

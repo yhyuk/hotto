@@ -107,50 +107,51 @@ const LottoCard = () => {
     const handleSaveAll = () => {
         let savedCount = 0; // 저장된 카드 개수를 추적
         const existingData = getStoredLottoNumbers();
-
+    
         const updatedData = [...existingData]; // 기존 데이터 복사
-
-        cards.forEach((card) => {
+    
+        for (const card of cards) {
             if (card.numbers.includes("?")) {
                 alert("번호를 추첨해야만 저장할 수 있습니다.");
-                return;
+                return; 
             }
-
+    
             // 중복 여부 확인
             const isDuplicate = existingData.some(
                 (existingCard) =>
                     JSON.stringify(existingCard.numbers) === JSON.stringify(card.numbers)
             );
-
+    
             if (isDuplicate) {
-                return;
+                continue;
             }
-
-            // 카드 저장 데이터 생성
+    
             const cardData = {
                 id: card.id,
                 numbers: card.numbers,
-                registered: formatDate(new Date()), // 현재 시간 저장
+                registered: formatDate(new Date()),
             };
-
-            updatedData.push(cardData); // 업데이트된 데이터에 추가
+    
+            updatedData.push(cardData);
             savedCount++;
-        });
-
+        }
+    
         // 로컬스토리지 갱신
         localStorage.setItem("myLottoNumbers", JSON.stringify(updatedData));
-
+    
         if (savedCount > 0) {
             alert(`${savedCount}개의 카드가 저장되었습니다.`);
         }
     };
-
+    
     return (
         <Container>
             <Header>
-                <Title>행운의 번호 추첨</Title>
+                <Title>행운의 번호</Title>
                 <div>
-                    <DefaultButton onClick={addCard}>추가</DefaultButton>
+                    {cards.length < 5 && (
+                        <DefaultButton onClick={addCard}>추가</DefaultButton>
+                    )}
                     <DrawButton onClick={fetchLottoNumbers}>추첨</DrawButton>
                     <SaveButton onClick={() => handleSaveAll()}>저장</SaveButton> {/* 상단 저장 버튼 추가 */}
                 </div>
@@ -178,8 +179,8 @@ export default LottoCard;
 const Container = styled.div`
     width: 100%; 
     margin: 0 auto;
-    padding: 20px;
     overflow: hidden; /* 튀어나오는 요소 제거 */
+    margin-bottom: 26px;
 `;
 
 const Header = styled.div`

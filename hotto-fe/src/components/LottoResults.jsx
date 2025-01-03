@@ -68,7 +68,7 @@ const LottoResults = () => {
                     </PrizeRow>
                 </PrizeContainer>
             </Header>
-            <Numbers>
+            <Card>
                 <Ball>{number1}</Ball>
                 <Ball>{number2}</Ball>
                 <Ball>{number3}</Ball>
@@ -77,7 +77,7 @@ const LottoResults = () => {
                 <Ball>{number6}</Ball>
                 <PlusSign>+</PlusSign>
                 <BonusBall>{bonusNumber}</BonusBall>
-            </Numbers>
+            </Card>
         </Container>
     );
 };
@@ -87,7 +87,7 @@ export default LottoResults;
 const Container = styled.div`
     width: 100%; 
     margin: 0 auto;
-    padding: 20px;
+    margin-bottom: 26px;
 `;
 
 const Header = styled.div`
@@ -129,7 +129,7 @@ const PrizeValue = styled.div`
     margin-bottom: 8px;
 `;
 
-const Numbers = styled.div`
+const Card = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
