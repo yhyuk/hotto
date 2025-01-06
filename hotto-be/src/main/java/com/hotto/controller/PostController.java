@@ -7,6 +7,7 @@ import com.hotto.dto.PostRequest;
 import com.hotto.entity.Comment;
 import com.hotto.entity.Post;
 import com.hotto.service.PostService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class PostController {
     }
 
     @PostMapping("/{postId}/comments")
-    public ResponseEntity<Comment> addComment(@RequestBody CommentRequest request) {
-        return ResponseEntity.ok(postService.addComment(request));
+    public ResponseEntity<Comment> addComment(@RequestBody CommentRequest request, HttpServletRequest httpRequest) {
+        return ResponseEntity.ok(postService.addComment(request, httpRequest));
     }
 }

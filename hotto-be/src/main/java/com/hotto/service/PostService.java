@@ -8,6 +8,7 @@ import com.hotto.entity.Comment;
 import com.hotto.entity.Post;
 import com.hotto.repository.CommentRepository;
 import com.hotto.repository.PostRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,19 +74,30 @@ public class PostService {
      * 댓글 작성
      */
     @Transactional
-    public Comment addComment(CommentRequest request) {
+    public Comment addComment(CommentRequest request, HttpServletRequest httpRequest) {
         Post post = postRepository.findById(request.postId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+
+        // 클라이언트 IP 주소 추출
+        String ipAddress = getClientIp(httpRequest);
 
         Comment comment = new Comment(
                 post,
                 request.nickname(),
-                request.ipAddress(),
+                ipAddress,
                 request.content()
         );
 
         return commentRepository.save(comment);
     }
 
+    // 클라이언트 IP 추출 메소드
+    private String getClientIp(HttpServletRequest request) {
+        String ipAddress = request.getHeader("X-Forwarded-For");
+        if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
+            ipAddress = request.getRemoteAddr();
+        }
+        return ipAddress;
+    }
 
 }
