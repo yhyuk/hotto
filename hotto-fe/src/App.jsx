@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import LottoGenerator from './components/LottoGenerator';
 import MyLotto from './components/MyLotto';
 import PostList from './components/PostList';
+import PostDetail from './components/PostDetail';
 
 import './App.css';
 
@@ -16,6 +17,7 @@ function App() {
                     <Route path="/" element={<LottoGenerator />} /> {/* 추첨 페이지 */}
                     <Route path="/mylotto" element={<MyLotto />} /> {/* 마이로또 페이지 */}
                     <Route path="/post" element={<PostList />} /> {/* 마이로또 페이지 */}
+                    <Route path="/post/:id" element={<PostDetail />} /> {/* 마이로또 상세 */}
                 </Routes>
             </div>
         </Router>
