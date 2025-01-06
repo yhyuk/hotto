@@ -81,7 +81,7 @@ const Table = styled.table`
 
 const Th = styled.th`
     padding: 10px;
-    text-align: left;
+    text-align: center;
     background-color: #f4f4f4;
     font-weight: bold;
     border-bottom: 2px solid #ddd;
@@ -91,7 +91,7 @@ const Th = styled.th`
 const Td = styled.td`
     padding: 5px;
     border-bottom: 1px solid #ddd;
-    text-align: left;
+    text-align: center;
     white-space: nowrap;
 `;
 

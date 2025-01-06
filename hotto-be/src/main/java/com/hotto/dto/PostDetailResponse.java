@@ -3,17 +3,18 @@ package com.hotto.dto;
 import com.hotto.entity.Comment;
 import com.hotto.entity.Post;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record PostDetailResponse (
         Long id,
-        String nickanme,
+        String nickname,
         String ipAddress,
         String title,
         String content,
         int likes,
         int views,
-        String createdAt,
+        LocalDateTime createdAt,
         List<CommentResponse> comments
 ){
     public PostDetailResponse(Post post, List<Comment> comments) {
@@ -25,7 +26,7 @@ public record PostDetailResponse (
                 post.getContent(),
                 post.getViews(),
                 post.getLikes(),
-                post.getCreatedAt().toString(),
+                post.getCreatedAt(),
                 comments.stream().map(CommentResponse::new).toList()
         );
     }

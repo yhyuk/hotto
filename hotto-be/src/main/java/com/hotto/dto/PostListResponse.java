@@ -2,12 +2,14 @@ package com.hotto.dto;
 
 import com.hotto.entity.Post;
 
+import java.time.LocalDateTime;
+
 public record PostListResponse (
         Long id,
-        String nickanme,
+        String nickname,
         String ipAddress,
         String title,
-        String createdAt,
+        LocalDateTime createdAt,
         int views,
         int likes
 ){
@@ -17,7 +19,7 @@ public record PostListResponse (
                 post.getNickname(),
                 post.getIpAddress(),
                 post.getTitle(),
-                post.getCreatedAt().toString(),
+                post.getCreatedAt(),
                 post.getViews(),
                 post.getLikes()
         );
