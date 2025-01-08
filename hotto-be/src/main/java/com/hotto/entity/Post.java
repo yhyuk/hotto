@@ -1,20 +1,26 @@
 package com.hotto.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
+@Entity
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nickname;
+    private String password;
     private String ipAddress;
     private String title;
     private String content;
@@ -22,26 +28,19 @@ public class Post {
     private int views;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostTag> postTags;
 
     @Column(updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
-    protected Post() {
-        // JPA 기본 생성자
-    }
-
-    public Post(String nickname, String ipAddress, String title, String content) {
-        this.nickname = nickname;
-        this.ipAddress = ipAddress;
-        this.title = title;
-        this.content = content;
-        this.likes = 0;
-        this.views = 0;
-    }
-
-    // Getters and setters...
     public void addLike() {
         this.likes++;
+    }
+
+    public void addView() {
+        this.views++;
     }
 }

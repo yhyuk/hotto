@@ -1,9 +1,12 @@
 package com.hotto.dto;
 
+import java.util.List;
+
 public record PostRequest (
         String nickname,
-        String ipAddress,
+        String password,
         String title,
-        String content
+        String content,
+        List<String> tagNames
 ){
 }

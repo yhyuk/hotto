@@ -13,22 +13,13 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Entity
-public class Comment {
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nickname;
-    private String password;
-    private String ipAddress;
-    private String content;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
+    private String tagName;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
-
 }
-

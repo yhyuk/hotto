@@ -32,8 +32,8 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody PostRequest request) {
-        return ResponseEntity.ok(postService.createPost(request));
+    public ResponseEntity<Post> createPost(@RequestBody PostRequest request, HttpServletRequest httpRequest) {
+        return ResponseEntity.ok(postService.createPost(request, httpRequest));
     }
 
     @PostMapping("/{postId}/likes")
@@ -42,7 +42,7 @@ public class PostController {
     }
 
     @PostMapping("/{postId}/comments")
-    public ResponseEntity<Comment> addComment(@RequestBody CommentRequest request, HttpServletRequest httpRequest) {
-        return ResponseEntity.ok(postService.addComment(request, httpRequest));
+    public ResponseEntity<Comment> addComment(@PathVariable Long postId, @RequestBody CommentRequest request, HttpServletRequest httpRequest) {
+        return ResponseEntity.ok(postService.addComment(postId, request, httpRequest));
     }
 }

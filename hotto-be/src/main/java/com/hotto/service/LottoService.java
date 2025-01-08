@@ -43,23 +43,18 @@ public class LottoService {
         // 현재 회차 계산
         int drawNumber = LottoUtil.calculateCurrentDrawNumber(LocalDate.now());
 
-        // WebClient에서 응답을 String 형태로 먼저 받음
         String responseBody = webClient
                 .get()
                 .uri("/common.do?method=getLottoNumber&drwNo=" + drawNumber)
                 .retrieve()
-                .bodyToMono(String.class) // 응답을 String으로 받기
-                .block(); // 동기 처리
+                .bodyToMono(String.class)
+                .block();
 
-        System.out.println("response 값 확인 : " + responseBody);
-
-        // 받은 응답이 실제로 JSON 형식인 경우만 파싱을 시도
         if (responseBody != null && responseBody.startsWith("{")) {
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
                 return objectMapper.readValue(responseBody, LottoPreviousResponse.class);
             } catch (Exception e) {
-                e.printStackTrace();
                 throw new RuntimeException("로또 데이터 파싱 실패", e);
             }
         } else {

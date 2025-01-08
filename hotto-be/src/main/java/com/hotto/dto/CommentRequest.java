@@ -1,8 +1,8 @@
 package com.hotto.dto;
 
 public record CommentRequest (
-        Long postId,
         String nickname,
+        String password,
         String content
 ){
 }
