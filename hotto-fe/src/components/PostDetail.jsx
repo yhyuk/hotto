@@ -9,12 +9,24 @@ const PostDetail = () => {
 
     const { id } = useParams();
     const [post, setPost] = useState(null);
+    const [comments, setComments] = useState([
+        {
+            nickname: "유저1",
+            content: "좋은 글 감사합니다!",
+        },
+        {
+            nickname: "유저2",
+            content: "동의합니다.",
+        },
+    ]);
+
 
     const [nickname, setNickname] = useState('');
     const [password, setPassword] = useState('');
     const [content, setContent] = useState('');
 
     const handleSubmit = () => {
+        console.log('post id check :', id)
         const commentData = { nickname, password, content };
 
         axios
@@ -44,14 +56,18 @@ const PostDetail = () => {
     if (!post) return <div>로딩 중...</div>;
 
     const formatTimeAgo = (createdAt) => {
+        if (createdAt === null) {
+            return "방금전";
+        }
+
         const now = new Date();
         const createdDate = new Date(createdAt);
-    
+
         const diffMs = now - createdDate; // 밀리초 차이
         const diffMinutes = Math.floor(diffMs / (1000 * 60)); // 분 단위
         const diffHours = Math.floor(diffMs / (1000 * 60 * 60)); // 시간 단위
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)); // 일 단위
-    
+
         if (diffMinutes < 60) {
             return `${diffMinutes}분 전`;
         } else if (diffHours < 24 && now.toDateString() === createdDate.toDateString()) {
@@ -63,7 +79,7 @@ const PostDetail = () => {
 
     return (
         <PostContainer>
-            <Title onClick={() => navigate('/post')}>커뮤니티</Title>
+            <Title onClick={() => navigate('/posts')}>커뮤니티</Title>
 
             {/* 커뮤니티 상세내용 */}
             <PostItem>
@@ -72,16 +88,16 @@ const PostDetail = () => {
                         <svg width="25" height="25" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 9.75C11.0711 9.75 12.75 8.07107 12.75 6C12.75 3.92893 11.0711 2.25 9 2.25C6.92893 2.25 5.25 3.92893 5.25 6C5.25 8.07107 6.92893 9.75 9 9.75Z" fill="#DADADA" stroke="#DADADA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15 15.75C15 14.1587 14.3679 12.6326 13.2426 11.5074C12.1174 10.3821 10.5913 9.75 9 9.75C7.4087 9.75 5.88258 10.3821 4.75736 11.5074C3.63214 12.6326 3 14.1587 3 15.75" stroke="#DADADA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9 10C7.4087 10 5.88258 10.6321 4.75736 11.7574C3.63214 12.8826 3 14.4087 3 16H15C15 14.4087 14.3679 12.8826 13.2426 11.7574C12.1174 10.6321 10.5913 10 9 10Z" fill="#DADADA" stroke="#DADADA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </div>
                     <ProfileContainer>
-                        <Nickname>{post.nickname}({post.ipAddress})</Nickname>
+                        <Nickname>{post.nickname}</Nickname>
                         <TimeContainer>
                             <Time>{formatTimeAgo(post.createdAt)}</Time>
                             <Stat>
-                                    <StatIcon>
-                                        <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="h-4 w-4 text-gray-500"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path></svg>
-                                    </StatIcon>
-                                    <div>
-                                        {post.views}
-                                    </div>
+                                <StatIcon>
+                                    <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="h-4 w-4 text-gray-500"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path></svg>
+                                </StatIcon>
+                                <div>
+                                    {post.views}
+                                </div>
                             </Stat>
                         </TimeContainer>
                     </ProfileContainer>
@@ -118,30 +134,75 @@ const PostDetail = () => {
             </PostItem>
 
             {/* 댓글작성 */}
-            <CommentForm>
-                <InputContainer>
-                    <Input
-                        type="text"
-                        placeholder="닉네임"
-                        value={nickname}
-                        onChange={(e) => setNickname(e.target.value)}
+            <CommentContainer>
+                <CommentForm>
+                    <InputContainer>
+                        <Input
+                            type="text"
+                            placeholder="닉네임"
+                            value={nickname}
+                            onChange={(e) => setNickname(e.target.value)}
+                        />
+                        <Input
+                            type="password"
+                            placeholder="비밀번호"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </InputContainer>
+                    <ContentInput
+                        placeholder="내용을 입력하세요."
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
                     />
-                    <Input
-                        type="password"
-                        placeholder="비밀번호"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </InputContainer>
-                <ContentInput
-                    placeholder="내용을 입력하세요."
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                />
-            </CommentForm>
-            <ButtonContainer>
-                <SubmitButton onClick={handleSubmit}>등록</SubmitButton>
-            </ButtonContainer>
+                </CommentForm>
+                <ButtonContainer>
+                    <SubmitButton onClick={handleSubmit}>등록</SubmitButton>
+                </ButtonContainer>
+            </CommentContainer>
+
+            {/* 댓글 목록 */}
+            {/* 댓글 목록 */}
+            <CommentList>
+                {comments.map((comment, index) => (
+                    <CommentItem key={index}>
+                        <Header>
+                            <div>
+                                <svg width="25" height="25" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9 9.75C11.0711 9.75 12.75 8.07107 12.75 6C12.75 3.92893 11.0711 2.25 9 2.25C6.92893 2.25 5.25 3.92893 5.25 6C5.25 8.07107 6.92893 9.75 9 9.75Z"
+                                        fill="#DADADA"
+                                        stroke="#DADADA"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                    <path
+                                        d="M15 15.75C15 14.1587 14.3679 12.6326 13.2426 11.5074C12.1174 10.3821 10.5913 9.75 9 9.75C7.4087 9.75 5.88258 10.3821 4.75736 11.5074C3.63214 12.6326 3 14.1587 3 15.75"
+                                        stroke="#DADADA"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                    <path
+                                        d="M9 10C7.4087 10 5.88258 10.6321 4.75736 11.7574C3.63214 12.8826 3 14.4087 3 16H15C15 14.4087 14.3679 12.8826 13.2426 11.7574C12.1174 10.6321 10.5913 10 9 10Z"
+                                        fill="#DADADA"
+                                        stroke="#DADADA"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                            </div>
+                            <CommentContentContainer>
+                                <CommentNickname>{comment.nickname}</CommentNickname>
+                                <CommentDate>{formatTimeAgo(comment.createdAt)}</CommentDate>
+                            </CommentContentContainer>
+                        </Header>
+                        <CommentText>{comment.content}</CommentText>
+                    </CommentItem>
+                ))}
+            </CommentList>
         </PostContainer>
     );
 };
@@ -189,6 +250,7 @@ const ProfileContainer = styled.div`
 const Nickname = styled.div`
     font-weight: bold;
     margin-bottom: 4px;
+    text-align: left;
 `;
 
 const TimeContainer = styled.div`
@@ -244,6 +306,11 @@ const StatIcon = styled.div`
     margin-right: 4px;
 `;
 
+const CommentContainer = styled.div`
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 12px;
+`
+
 const CommentForm = styled.div`
     margin-top: 16px;
     margin-bottom: 8px;
@@ -274,6 +341,7 @@ const ContentInput = styled.textarea`
 
 const ButtonContainer = styled.div`
     text-align: right;
+    margin-bottom: 12px;
 `
 
 const SubmitButton = styled.button`
@@ -288,4 +356,38 @@ const SubmitButton = styled.button`
     &:hover {
         background-color: #005bb5;
     }
+`;
+
+const CommentList = styled.div`
+`;
+
+const CommentItem = styled.div`
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 12px;
+    padding: 12px 0;
+`;
+
+const CommentContentContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+`;
+
+const CommentNickname = styled.span`
+    font-weight: bold;
+    font-size: 14px;
+    text-align: left;
+`;
+
+const CommentDate = styled.span`
+    font-size: 12px;
+    color: #888;
+`;
+
+const CommentText = styled.p`
+    font-size: 14px;
+    text-align: left;
+    color: #555;
+    margin: 0;
+    margin-top: 12px;
 `;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styled from "styled-components";
-import { v4 as uuidv4 } from 'uuid'; // uuid 생성 라이브러리
+import { v4 as uuidv4 } from 'uuid'; 
 
 const LottoCard = () => {
     const [cards, setCards] = useState([{ numbers: Array(6).fill('?'), id: uuidv4(), registered: new Date().toISOString() }]); // 초기 1개의 카드
@@ -23,16 +23,16 @@ const LottoCard = () => {
             const newCards = await Promise.all(
                 cards.map(async (card) => {
                     const response = await axios.get('http://localhost:8080/lotto');
-                    // 새로 번호를 받으면, 새로운 uuid를 생성하여 저장
+                    
                     return { 
                         ...card, 
-                        id: uuidv4(), // 새로운 uuid로 업데이트
-                        numbers: response.data.numbers, // 추첨된 번호로 업데이트
-                        registered: formatDate(new Date()) // 등록 시간을 새로 업데이트
+                        id: uuidv4(), 
+                        numbers: response.data.numbers, 
+                        registered: formatDate(new Date()) 
                     };
                 })
             );
-            setCards(newCards); // 모든 카드 업데이트
+            setCards(newCards); 
             setError(null);
         } catch (err) {
             setError('Failed to fetch lotto numbers');
@@ -59,24 +59,23 @@ const LottoCard = () => {
     // 로컬스토리지에 저장된 배열 가져오기
     const getStoredLottoNumbers = () => {
         const storedData = localStorage.getItem("myLottoNumbers");
-        return storedData ? JSON.parse(storedData) : []; // 데이터가 없으면 빈 배열 반환
+        return storedData ? JSON.parse(storedData) : []; 
     };
 
     // 로컬 스토리지 번호 저장
     const saveLottoNumbersToLocalStorage = (cardId, numbers) => {
-        const registered = formatDate(new Date()); // 현재 시간 yyyy-mm-dd HH:MM:ss
+        const registered = formatDate(new Date()); 
 
         const existingData = getStoredLottoNumbers();
 
-        // 중복 여부 확인
         const isDuplicate = existingData.some(
             (card) =>
-                JSON.stringify(card.numbers) === JSON.stringify(numbers) // 배열 비교
+                JSON.stringify(card.numbers) === JSON.stringify(numbers) 
         );
     
         if (isDuplicate) {
             alert("이미 저장된 번호입니다!");
-            return false; // 저장 중단
+            return false; 
         }
     
         const cardData = {
@@ -86,7 +85,7 @@ const LottoCard = () => {
         };
 
         const updatedData = [...existingData, cardData];
-        localStorage.setItem("myLottoNumbers", JSON.stringify(updatedData)); // 'myLottoNumbers' 키에 배열 저장
+        localStorage.setItem("myLottoNumbers", JSON.stringify(updatedData)); 
         return true;
     };
 
@@ -105,10 +104,10 @@ const LottoCard = () => {
 
     // 전체 저장 버튼 handler
     const handleSaveAll = () => {
-        let savedCount = 0; // 저장된 카드 개수를 추적
+        let savedCount = 0; 
         const existingData = getStoredLottoNumbers();
     
-        const updatedData = [...existingData]; // 기존 데이터 복사
+        const updatedData = [...existingData]; 
     
         for (const card of cards) {
             if (card.numbers.includes("?")) {
@@ -116,7 +115,6 @@ const LottoCard = () => {
                 return; 
             }
     
-            // 중복 여부 확인
             const isDuplicate = existingData.some(
                 (existingCard) =>
                     JSON.stringify(existingCard.numbers) === JSON.stringify(card.numbers)
@@ -136,7 +134,6 @@ const LottoCard = () => {
             savedCount++;
         }
     
-        // 로컬스토리지 갱신
         localStorage.setItem("myLottoNumbers", JSON.stringify(updatedData));
     
         if (savedCount > 0) {
@@ -171,7 +168,7 @@ const LottoCard = () => {
                             <Ball key={idx} color={getColorForNumber(number)}>{number}</Ball>
                         ))}
                     </Card>
-                    {index > 0 && ( // 첫 번째 카드는 삭제 버튼 표시하지 않음
+                    {index > 0 && ( 
                         <DeleteButton onClick={() => removeCard(card.id)}>삭제</DeleteButton>
                     )}
                     <SaveButton onClick={() => handleSave(card.id, card.numbers)}>저장</SaveButton>
@@ -187,7 +184,7 @@ export default LottoCard;
 const Container = styled.div`
     width: 100%; 
     margin: 0 auto;
-    overflow: hidden; /* 튀어나오는 요소 제거 */
+    overflow: hidden; 
     margin-bottom: 26px;
 `;
 
@@ -281,9 +278,9 @@ const Title = styled.h2`
 const CardContainer = styled.div`
     margin-bottom: 12px;
     display: flex;
-    flex-direction: row; /* 카드와 삭제 버튼을 가로로 배치 */
-    align-items: center;  /* 카드와 버튼을 세로로 중앙 정렬 */
-    justify-content: space-between; /* 공간을 양옆으로 분배 */
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: space-between; 
 `;
 
 const Card = styled.div`

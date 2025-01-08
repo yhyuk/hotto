@@ -8,7 +8,7 @@ const Navbar = () => {
             <NavHotto to="/" exact activeClassName="active">HOTTO</NavHotto>
             <NavItem to="/" exact activeClassName="active">추첨하기</NavItem>
             <NavItem to="/mylotto" exact activeClassName="active">마이로또</NavItem>
-            <NavItem to="/post" exact activeClassName="active">커뮤니티 </NavItem>
+            <NavItem to="/posts" exact activeClassName="active">커뮤니티 </NavItem>
         </Nav>
     );
 };
