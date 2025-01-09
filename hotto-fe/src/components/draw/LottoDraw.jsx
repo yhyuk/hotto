@@ -20,19 +20,20 @@ const LottoCard = () => {
     // 모든 카드의 번호 생성 함수
     const fetchLottoNumbers = async () => {
         try {
-            const newCards = await Promise.all(
-                cards.map(async (card) => {
-                    const response = await axios.get('http://localhost:8080/lotto');
-                    
-                    return { 
-                        ...card, 
-                        id: uuidv4(), 
-                        numbers: response.data.numbers, 
-                        registered: formatDate(new Date()) 
-                    };
-                })
-            );
-            setCards(newCards); 
+            const updatedCards = [];
+            
+            for (const card of cards) {
+                const response = await axios.get('https://luckyhotto.shop/api/lotto');
+                const newCard = {
+                    ...card,
+                    id: uuidv4(),
+                    numbers: response.data.numbers,
+                    registered: formatDate(new Date()),
+                };
+                updatedCards.push(newCard);
+            }
+    
+            setCards(updatedCards); // 최종적으로 업데이트
             setError(null);
         } catch (err) {
             setError('Failed to fetch lotto numbers');

@@ -24,7 +24,7 @@ const PostWrite = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:8080/posts', {
+            const response = await axios.post('https://luckyhotto.shop/api/posts', {
                 nickname,
                 password, 
                 title,
@@ -61,7 +61,7 @@ const PostWrite = () => {
                         <FormGroup>
                             <Label>비밀번호</Label>
                             <Input
-                                type="text"
+                                type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required

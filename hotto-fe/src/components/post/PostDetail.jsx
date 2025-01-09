@@ -17,7 +17,7 @@ const PostDetail = () => {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/posts/${id}`)
+            .get(`https://luckyhotto.shop/api/posts/${id}`)
             .then((response) => {
                 setPost(response.data);
                 setComments(response.data.comments);
@@ -34,7 +34,7 @@ const PostDetail = () => {
         const commentData = { nickname, password, content };
 
         axios
-            .post(`http://localhost:8080/posts/${id}/comments`, commentData)
+            .post(`https://luckyhotto.shop/api/posts/${id}/comments`, commentData)
             .then((response) => {
                 setNickname('');
                 setPassword('');
@@ -56,7 +56,7 @@ const PostDetail = () => {
         }
 
         try {
-            const response = await axios.post(`http://localhost:8080/posts/${id}/likes`);
+            const response = await axios.post(`https://luckyhotto.shop/api/posts/${id}/likes`);
             document.cookie = `post_${id}_liked=true; path=/; max-age=86400`; // 1일
             // 좋아요 수 업데이트
             setPost((prevPost) => ({

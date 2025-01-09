@@ -15,9 +15,19 @@ const LottoManual = () => {
                 return [...prev, number].sort((a, b) => a - b); // 오름차순 정렬
             } else {
                 alert('공이 가득 찼습니다.')
-                return prev; 
+                return prev;
             }
         });
+    };
+
+    // 선택 초기화
+    const resetSelection = () => {
+        setSelectedNumbers([]);
+    };
+
+    // 개별 번호 제거
+    const removeNumber = (number) => {
+        setSelectedNumbers((prev) => prev.filter((n) => n !== number));
     };
 
     const getColorForNumber = (number) => {
@@ -32,6 +42,7 @@ const LottoManual = () => {
         <Container>
             <Header>
                 <Title>수동 선택</Title>
+                <ResetButton onClick={resetSelection}>초기화</ResetButton>
             </Header>
             <NumberGrid>
                 {Array.from({ length: 45 }, (_, i) => i + 1).map((number) => (
@@ -47,7 +58,12 @@ const LottoManual = () => {
             </NumberGrid>
             <Card>
                 {Array.from({ length: 6 }, (_, i) => (
-                    <Ball key={i}>
+                    <Ball
+                        key={i}
+                        onClick={() =>
+                            selectedNumbers[i] !== undefined && removeNumber(selectedNumbers[i])
+                        }
+                    >
                         {selectedNumbers[i] !== undefined ? selectedNumbers[i] : "?"}
                     </Ball>
                 ))}
@@ -65,6 +81,8 @@ const Container = styled.div`
 
 const Header = styled.div`
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     margin-bottom: 20px;
     box-sizing: border-box;
@@ -78,6 +96,22 @@ const Title = styled.h2`
     box-sizing: border-box;
 `;
 
+const ResetButton = styled.button`
+    background-color: gray;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: black;
+    }
+`;
+
 const NumberGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(8, 1fr); 
@@ -88,8 +122,8 @@ const NumberGrid = styled.div`
 `;
 
 const NumberBall = styled.div`
-    width: 42px;
-    height: 42px;
+    width: 48px;
+    height: 48px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -137,4 +171,11 @@ const Ball = styled.div`
     margin: 0 5px;
     font-size: 18px;
     font-weight: bold;
+    cursor: ${({ onClick }) => (onClick ? "pointer" : "default")};
+    transition: transform 0.3s;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
 `;

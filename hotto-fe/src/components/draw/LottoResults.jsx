@@ -11,7 +11,7 @@ const LottoResults = () => {
         // API 호출
         const fetchLottoData = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/lotto/previous");
+                const response = await axios.get("https://luckyhotto.shop/api/lotto/previous");
                 setLottoData(response.data);
                 setLoading(false);
             } catch (err) {

@@ -11,7 +11,7 @@ const PostList = () => {
     // 게시글 목록
     useEffect(() => {
         axios
-            .get("http://localhost:8080/posts")
+            .get("https://luckyhotto.shop/api/posts")
             .then((response) => {
                 setPosts(response.data);
             })
