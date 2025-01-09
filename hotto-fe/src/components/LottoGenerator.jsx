@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
-import LottoCard from './LottoDraw';
-import LottoResults from './LottoResults';
-import LottoManual from './LottoManual';
+import LottoCard from './draw/LottoDraw';
+import LottoResults from './draw/LottoResults';
+import LottoManual from './draw/LottoManual';
 
 const LottoGenerator = () => {
     return (

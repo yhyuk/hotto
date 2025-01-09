@@ -281,17 +281,21 @@ const CardContainer = styled.div`
     flex-direction: row; 
     align-items: center; 
     justify-content: space-between; 
+
+
+    @media (max-width: 768px) { /* 태블릿 */
+        justify-content: center;
+    }
 `;
 
 const Card = styled.div`
     display: flex;
     width: 100%;
     align-items: center;
-    // justify-content: center;
-    // padding: 15px;
-    // border-radius: 8px;
-    // box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    // box-sizing: border-box;
+
+    @media (max-width: 480px) { /* 모바일 */
+        gap: 2px;
+    }
 `;
 
 const Ball = styled.div`
@@ -306,4 +310,18 @@ const Ball = styled.div`
     font-size: 18px;
     font-weight: bold;
     box-sizing: border-box;
+
+    @media (max-width: 768px) { /* 태블릿 */
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        margin: 0 4px;
+    }
+
+    @media (max-width: 480px) { /* 모바일 */
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+        margin: 0 3px;
+    }
 `;

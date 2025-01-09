@@ -80,7 +80,7 @@ const Title = styled.h2`
 
 const NumberGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(9, 1fr); /* 9개씩 나열 */
+    grid-template-columns: repeat(8, 1fr); 
     gap: 10px;
     width: 100%;
     max-width: 400px;
@@ -88,14 +88,14 @@ const NumberGrid = styled.div`
 `;
 
 const NumberBall = styled.div`
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
     background-color: ${({ selected, color }) =>
-        selected ? "black" : color}; /* 선택된 경우 색상 변경 */
+        selected ? "black" : color}; 
     color: ${({ selected }) => (selected ? "white" : "black")};
     font-size: 16px;
     font-weight: bold;
@@ -103,7 +103,13 @@ const NumberBall = styled.div`
     transition: all 0.3s;
 
     &:hover {
-        transform: scale(1.1); /* 마우스 올릴 때 크기 증가 */
+        transform: scale(1.1); 
+    }
+
+    @media (max-width: 480px) { 
+        width: 32px;
+        height: 32px;
+        font-size: 14px; 
     }
 `;
 

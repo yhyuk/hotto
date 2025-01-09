@@ -65,11 +65,11 @@ const LottoResults = () => {
                 </Title>
                 <PrizeContainer>
                     <PrizeRow>
-                        <PrizeLabel>총 당첨금</PrizeLabel>
+                        <PrizeLabel>총 당첨금 :</PrizeLabel>
                         <PrizeValue>{formatAmount(firstAccumamnt)}원</PrizeValue>
                     </PrizeRow>
                     <PrizeRow>
-                        <PrizeLabel>1등 당첨금({firstPrzwnerCo}명)</PrizeLabel>
+                        <PrizeLabel>1등 당첨금({firstPrzwnerCo}명) :</PrizeLabel>
                         <PrizeValue>
                             {formatAmount(firstWinamnt)}원
                         </PrizeValue>
@@ -99,7 +99,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 `;
 
 const Title = styled.h2`
@@ -121,20 +121,22 @@ const PrizeContainer = styled.div`
 `;
 
 const PrizeRow = styled.div`
+    display: flex;
     margin: 5px 0;
+    align-items: center;
 `;
 
 const PrizeLabel = styled.div`
     font-size: 16px;
     font-weight: bold;
     color: #333;
-    margin-bottom: 8px;
+    margin-right: 6px;
 `;
 
 const PrizeValue = styled.div`
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 8px;
+    font-size: 20px; 
+    font-weight: bold;
+    color: #007BFF;
 `;
 
 const Card = styled.div`
@@ -146,8 +148,12 @@ const Card = styled.div`
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%; /* 부모 컨테이너와 동일한 너비 */
+    width: 100%; 
     box-sizing: border-box;
+
+    @media (max-width: 480px) { /* 모바일 */
+        gap: 2px;
+    }
 `;
 
 const Ball = styled.div`
@@ -162,6 +168,22 @@ const Ball = styled.div`
     margin: 0 5px;
     font-size: 18px;
     font-weight: bold;
+    box-sizing: border-box;
+
+    @media (max-width: 768px) { /* 태블릿 */
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        margin: 0 4px;
+    }
+
+    @media (max-width: 480px) { /* 모바일 */
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+        margin: 0 3px;
+    }
+
 `;
 
 const BonusBall = styled(Ball)`

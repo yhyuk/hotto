@@ -33,16 +33,18 @@ const PostList = () => {
 
     const formatTimeAgo = (createdAt) => {
         const now = new Date();
-        const createdDate = new Date(createdAt);
-    
-        const diffMs = now - createdDate; // 밀리초 차이
-        const diffMinutes = Math.floor(diffMs / (1000 * 60)); // 분 단위
-        const diffHours = Math.floor(diffMs / (1000 * 60 * 60)); // 시간 단위
-        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)); // 일 단위
-    
-        if (diffMinutes < 60) {
+        const createdDate = new Date(createdAt.replace('T', ' ') + '+0900');
+            
+        const diffMs = now.getTime() - createdDate.getTime();
+        const diffMinutes = Math.floor(diffMs / (1000 * 60));
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        
+        if (diffMinutes < 1) {
+            return "방금 전";
+        } else if (diffMinutes < 60) {
             return `${diffMinutes}분 전`;
-        } else if (diffHours < 24 && now.toDateString() === createdDate.toDateString()) {
+        } else if (diffHours < 24) {
             return `${diffHours}시간 전`;
         } else {
             return `${diffDays}일 전`;
@@ -55,6 +57,7 @@ const PostList = () => {
                 <Title onClick={() => window.location.reload()}>커뮤니티</Title>
                 <WriteButton onClick={() => navigate('/posts-write')}>글쓰기</WriteButton>
             </TopContainer>
+            <TopLine />
             {posts.length === 0 ? (
                 <NoneContentMessage>새로운 게시글을 처음으로 작성해주세요!</NoneContentMessage>
             ) : (
@@ -97,7 +100,7 @@ const PostList = () => {
                                         <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="h-4 w-4 text-gray-500"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"></path></svg>
                                     </StatIcon>
                                     <div>
-                                        0
+                                        {post.commentCount}
                                     </div>
                                 </Stat>
                             </Stats>
@@ -115,13 +118,23 @@ const TopContainer = styled.div`
     display:flex;
     justify-content: space-between;
     align-items: center;
+`
+
+const TopLine = styled.hr`
+    border: none;
     border-bottom: 1px solid #ddd;
+    margin-top: 8px;
     margin-bottom: 20px;
 `
 
 const WriteButton = styled.button`
-    padding: 10px 10px;
-    margin-bottom: 6px;
+    padding: 11px 10px;
+    font-size: 14px;
+
+    @media (max-width: 480px) {
+        font-size: 12px;
+        padding: 10px;
+    }
 `
 
 const Title = styled.h2`
@@ -160,6 +173,11 @@ const PostItem = styled.div`
     &:last-child {
         border-bottom: none; 
     }
+
+    @media (max-width: 480px) {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
 `;
 
 const Header = styled.div`
@@ -191,13 +209,16 @@ const Text = styled.p`
 `;
 
 const NewLabel = styled.p`
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
     font-size: 10px;
     font-weight: bold;
-    height: 100%;
     color: #fff;
     background-color: #ff4500;
-    border-radius: 6px;
-    padding: 2px;
+    border-radius: 50%; 
+    width: 14px;
+    height: 14px;
     margin-left: 4px;
 `;
 
@@ -229,5 +250,7 @@ const Stat = styled.span`
 `;
 
 const StatIcon = styled.div`
+    align-items: center;
+    display: flex;
     margin-right: 4px;
 `;
