@@ -13,7 +13,8 @@ public record PostListResponse (
         List<String> tags,
         LocalDateTime createdAt,
         int views,
-        int likes
+        int likes,
+        int commentCount
 ){
     public PostListResponse(Post post) {
         this(
@@ -26,7 +27,8 @@ public record PostListResponse (
                         .toList(),
                 post.getCreatedAt(),
                 post.getViews(),
-                post.getLikes()
+                post.getLikes(),
+                post.getCommentCount()
         );
     }
 }

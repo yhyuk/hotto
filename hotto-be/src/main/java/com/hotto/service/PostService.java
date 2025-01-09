@@ -1,9 +1,6 @@
 package com.hotto.service;
 
-import com.hotto.dto.CommentRequest;
-import com.hotto.dto.PostDetailResponse;
-import com.hotto.dto.PostListResponse;
-import com.hotto.dto.PostRequest;
+import com.hotto.dto.*;
 import com.hotto.entity.Comment;
 import com.hotto.entity.Post;
 import com.hotto.entity.PostTag;
@@ -36,7 +33,7 @@ public class PostService {
      * 글 목록 조회
      */
     public List<PostListResponse> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
         return posts.stream()
                 .map(PostListResponse::new)
                 .toList();
@@ -45,13 +42,14 @@ public class PostService {
     /**
      * 글 상세 조회
      */
+    @Transactional
     public PostDetailResponse getPostById(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글 입니다."));
 
-        List<Comment> comments = commentRepository.findByPostId(post.getId());
-
         post.addView();
+
+        List<Comment> comments = commentRepository.findByPostId(post.getId());
         return new PostDetailResponse(post, comments);
     }
 
@@ -103,7 +101,7 @@ public class PostService {
      * 댓글 작성
      */
     @Transactional
-    public Comment addComment(Long postId, CommentRequest request, HttpServletRequest httpRequest) {
+    public CommentResponse addComment(Long postId, CommentRequest request, HttpServletRequest httpRequest) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
 
@@ -116,7 +114,10 @@ public class PostService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        return commentRepository.save(comment);
+        commentRepository.save(comment);
+        post.addComment();
+
+        return new CommentResponse(comment);
     }
 
 

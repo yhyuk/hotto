@@ -24,8 +24,14 @@ public class Post {
     private String ipAddress;
     private String title;
     private String content;
+    @Column(columnDefinition = "int default 0")
     private int likes;
+
+    @Column(columnDefinition = "int default 0")
     private int views;
+
+    @Column(columnDefinition = "int default 0")
+    private int commentCount;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
@@ -42,5 +48,9 @@ public class Post {
 
     public void addView() {
         this.views++;
+    }
+
+    public void addComment() {
+        this.commentCount++;
     }
 }

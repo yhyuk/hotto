@@ -12,9 +12,11 @@ public record PostDetailResponse (
         String ipAddress,
         String title,
         String content,
-        int likes,
-        int views,
+        List<String> tags,
         LocalDateTime createdAt,
+        int views,
+        int likes,
+        int commentCount,
         List<CommentResponse> comments
 ){
     public PostDetailResponse(Post post, List<Comment> comments) {
@@ -24,9 +26,13 @@ public record PostDetailResponse (
                 post.getIpAddress(),
                 post.getTitle(),
                 post.getContent(),
+                post.getPostTags().stream()
+                        .map(postTag -> postTag.getTag().getTagName())
+                        .toList(),
+                post.getCreatedAt(),
                 post.getViews(),
                 post.getLikes(),
-                post.getCreatedAt(),
+                post.getCommentCount(),
                 comments.stream().map(CommentResponse::new).toList()
         );
     }

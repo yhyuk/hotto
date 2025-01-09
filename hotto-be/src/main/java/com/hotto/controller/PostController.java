@@ -1,10 +1,6 @@
 package com.hotto.controller;
 
-import com.hotto.dto.CommentRequest;
-import com.hotto.dto.PostDetailResponse;
-import com.hotto.dto.PostListResponse;
-import com.hotto.dto.PostRequest;
-import com.hotto.entity.Comment;
+import com.hotto.dto.*;
 import com.hotto.entity.Post;
 import com.hotto.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,7 +38,7 @@ public class PostController {
     }
 
     @PostMapping("/{postId}/comments")
-    public ResponseEntity<Comment> addComment(@PathVariable Long postId, @RequestBody CommentRequest request, HttpServletRequest httpRequest) {
+    public ResponseEntity<CommentResponse> addComment(@PathVariable Long postId, @RequestBody CommentRequest request, HttpServletRequest httpRequest) {
         return ResponseEntity.ok(postService.addComment(postId, request, httpRequest));
     }
 }
